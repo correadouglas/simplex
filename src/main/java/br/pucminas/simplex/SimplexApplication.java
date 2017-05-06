@@ -5,6 +5,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
+/**
+ * 
+ * Pontificia Universidade Catolica de Minas Gerais.
+ * Otimizacao de Sistemas Computacionais.
+ * 
+ * Implementacao Simplex.
+ *
+ * Douglas Henrique Silva Correa.
+ * Guilherme Silva Santos.
+ * Mateus Felipe Martins Miranda.
+ * 
+ */
 @SpringBootApplication
 public class SimplexApplication extends SpringBootServletInitializer {
 

@@ -9,6 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
+/**
+ * 
+ * Pontificia Universidade Catolica de Minas Gerais.
+ * Otimizacao de Sistemas Computacionais.
+ * 
+ * Implementacao Simplex.
+ *
+ * Douglas Henrique Silva Correa.
+ * Guilherme Silva Santos.
+ * Mateus Felipe Martins Miranda.
+ * 
+ */
 @RestController
 public class SimplexController {
 

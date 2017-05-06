@@ -1,5 +1,17 @@
 package br.pucminas.simplex;
 
+/**
+ * 
+ * Pontificia Universidade Catolica de Minas Gerais.
+ * Otimizacao de Sistemas Computacionais.
+ * 
+ * Implementacao Simplex.
+ *
+ * Douglas Henrique Silva Correa.
+ * Guilherme Silva Santos.
+ * Mateus Felipe Martins Miranda.
+ * 
+ */
 public class TabelaSimplex {
 	
 	Expressao e;
@@ -7,6 +19,10 @@ public class TabelaSimplex {
 	private int[] variaveisBasicas;
 	private int[] variaveisNaoBasicas;
 
+	/**
+	 * construtor padrao.
+	 * 
+	 */
 	public TabelaSimplex(Expressao e) {
 		this.e = e;
 		this.criarTabelaSimplex();
@@ -16,6 +32,9 @@ public class TabelaSimplex {
 		this.setVariaveisBasicas();
 	}
 
+	/**
+	 * cria a tabela do simplex.
+	 */
 	private void criarTabelaSimplex() {
 		this.variaveisBasicas = new int[e.contadorVariaveisBasicas()];
 		this.variaveisNaoBasicas = new int[e.contadorVariveisNaoBasicas()];
@@ -23,7 +42,10 @@ public class TabelaSimplex {
 		int cols = variaveisNaoBasicas.length + 1;
 		tabelaSimplex = new Celula[rows][cols];
 	}
-
+	
+	/**
+	 * preenche a tabela do simplex com os valores da funcao objetivo.
+	 */
 	private void preencherTabelaObjetivo() {
 		tabelaSimplex[0][0] = new Celula();
 
@@ -40,6 +62,9 @@ public class TabelaSimplex {
 		}
 	}
 
+	/**
+	 * preenche as restricoes na tabela do simplex.
+	 */
 	private void preencherRestricoes() {
 		for (int i = 1; i <= variaveisBasicas.length; i += 1) {
 			int multiplicador;
@@ -54,19 +79,28 @@ public class TabelaSimplex {
 			}
 		}
 	}
-
+	
+	/**
+	 * seta as variaveis basicas.
+	 */
 	private void setVariaveisBasicas() {
 		for (int i = 0; i < variaveisBasicas.length; i += 1) {
 			variaveisBasicas[i] = i + variaveisNaoBasicas.length;
 		}
 	}
-
+	
+	/**
+	 * seta as variaveis nao basicas.
+	 */
 	private void setVariaveisNaoBasicas() {
 		for (int i = 0; i < variaveisNaoBasicas.length; i += 1) {
 			variaveisNaoBasicas[i] = i;
 		}
 	}
-
+	
+	/** pega os indices dos membros livres que sao negativos.
+	 * 
+	 */
 	public int getIndiceMembrosLivresNegativos() {
 		for (int i = 1; i < tabelaSimplex.length; i += 1) {
 			if (tabelaSimplex[i][0].getTop() < 0) { 
@@ -75,7 +109,10 @@ public class TabelaSimplex {
 		}
 		return -1;
 	}
-
+	
+	/**
+	 * pega o indice da funcao positiva.
+	 */
 	public int getIndiceFXPositivo() {
 		for (int i = 1; i < tabelaSimplex[0].length; i += 1) {
 			if (tabelaSimplex[0][i].getTop() == 0) {
@@ -87,32 +124,54 @@ public class TabelaSimplex {
 		return -1;
 	}
 
-	public int getColunaComElementoNegativo(int line) {
-		for (int i = 1; i < tabelaSimplex[line].length; i += 1) {
-			if (tabelaSimplex[line][i].getTop() < 0) { 
+	/**
+	 * pega a coluna com elemento negativo na linha passada.
+	 * 
+	 * @param linha
+	 * @return
+	 */
+	public int getColunaComElementoNegativo(int linha) {
+		for (int i = 1; i < tabelaSimplex[linha].length; i += 1) {
+			if (tabelaSimplex[linha][i].getTop() < 0) { 
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	public void trocarAlgoritmo(int linhaPermitida, int colunaPermitida) {
+	/**
+	 * multiplica os elementos da linha e coluna selecionada pelo inverso 
+	 * multiplica as celulas abaixo e refaz a tabela, e troca as variaveis  
+	 * nao basicas com as basicas.
+	 * 
+	 * @param linhaPermitida
+	 * @param colunaPermitida
+	 */
+	public void mudarAlgoritmo(int linhaPermitida, int colunaPermitida) {
 		double elementoPermitido = tabelaSimplex[linhaPermitida][colunaPermitida].getTop();
 
 		double inverso = Math.pow(elementoPermitido, -1);
 		tabelaSimplex[linhaPermitida][colunaPermitida].setBottom(inverso);
 
 		multiplicarLinhaPermitidaPeloInverso(linhaPermitida, colunaPermitida, inverso);
+		
 		multiplicarColunaPermitidaPeloInversoNegativo(linhaPermitida, colunaPermitida, inverso);
 
 		multiplicarCelulasAbaixo(linhaPermitida, colunaPermitida);
 
 		refazerTabela(linhaPermitida, colunaPermitida);
 
-		trocarVariveisNaoBasicasComBasicas(linhaPermitida, colunaPermitida);
+		trocarVariaveisNaoBasicasComBasicas(linhaPermitida, colunaPermitida);
 
 	}
 
+	/**
+	 * multiplica as linhas pelo inverso.
+	 * 
+	 * @param linhaPermitida
+	 * @param colunaPermitida
+	 * @param inverso
+	 */
 	private void multiplicarLinhaPermitidaPeloInverso(int linhaPermitida, int colunaPermitida, double inverso) {
 		for (int j = 0; j < tabelaSimplex[0].length; j += 1) {
 			if (j != colunaPermitida) { 
@@ -121,6 +180,13 @@ public class TabelaSimplex {
 		}
 	}
 
+	/**
+	 * multiplica coluna permitida pelo inverso negativo.
+	 * 
+	 * @param linhaPermitida
+	 * @param colunaPermitida
+	 * @param inverso
+	 */
 	private void multiplicarColunaPermitidaPeloInversoNegativo(int linhaPermitida, int colunaPermitida, double inverso) {
 		for (int i = 0; i < tabelaSimplex.length; i += 1) {
 			if (i != linhaPermitida) { 
@@ -129,6 +195,12 @@ public class TabelaSimplex {
 		}
 	}
 
+	/**
+	 * multiplica as celulas abaixo.
+	 * 
+	 * @param linhaPermitida
+	 * @param colunaPermitida
+	 */
 	private void multiplicarCelulasAbaixo(int linhaPermitida, int colunaPermitida) {
 		for (int i = 0; i < tabelaSimplex.length; i += 1) {
 			if (i != linhaPermitida) {
@@ -143,6 +215,12 @@ public class TabelaSimplex {
 		}
 	}
 
+	/**
+	 * refaz a tabela do simplex.
+	 * 
+	 * @param linhaPermitida
+	 * @param colunaPermitida
+	 */
 	private void refazerTabela(int linhaPermitida, int colunaPermitida) {
 		Celula[][] tabela = new Celula[tabelaSimplex.length][tabelaSimplex[0].length];
 
@@ -152,6 +230,13 @@ public class TabelaSimplex {
 		tabelaSimplex = tabela;
 	}
 
+	/**
+	 * copia as celulas.
+	 * 
+	 * @param tabela
+	 * @param linhaPermitida
+	 * @param colunaPermitida
+	 */
 	private void copiaCelulas(Celula[][] tabela, int linhaPermitida, int colunaPermitida) {
 		for (int i = 0; i < tabela.length; i += 1) {
 			tabela[i][colunaPermitida] = new Celula(tabelaSimplex[i][colunaPermitida].getBottom());
@@ -162,6 +247,13 @@ public class TabelaSimplex {
 		}
 	}
 
+	/**
+	 * soma as celulas.
+	 * 
+	 * @param tabela
+	 * @param linhaPermitida
+	 * @param colunaPermitida
+	 */
 	private void somaCelulas(Celula[][] tabela, int linhaPermitida, int colunaPermitida) {
 
 		for (int i = 0; i < tabela.length; i += 1) {
@@ -176,7 +268,13 @@ public class TabelaSimplex {
 		}
 	}
 
-	private void trocarVariveisNaoBasicasComBasicas(int linhaPermitida, int colunaPermitida) {
+	/**
+	 * metodo que faz a troca das variaveis nao basicas com as basicas.
+	 * 
+	 * @param linhaPermitida
+	 * @param colunaPermitida
+	 */
+	private void trocarVariaveisNaoBasicasComBasicas(int linhaPermitida, int colunaPermitida) {
 		int index = -1;
 		int variavelNaoBasica = variaveisNaoBasicas[colunaPermitida + index];
 		variaveisNaoBasicas[colunaPermitida + index] = variaveisBasicas[linhaPermitida + index];
@@ -203,6 +301,11 @@ public class TabelaSimplex {
 		return linhaPermitida;
 	}
 
+	/**
+	 * pega os valores das variaveis.
+	 * 
+	 * @return
+	 */
 	public double[] getValoresVariaveis() {
 		double[] valores = new double[variaveisBasicas.length + variaveisNaoBasicas.length + 1];
 
@@ -220,15 +323,15 @@ public class TabelaSimplex {
 		return valores;
 	}
 
-	public Celula[][] getSimplexTable() {
+	public Celula[][] getTabelaSimplex() {
 		return tabelaSimplex;
 	}
 
-	public int[] getBasicVariables() {
+	public int[] getVariaveisBasicas() {
 		return variaveisBasicas;
 	}
 
-	public int[] getNonBasicVariables() {
+	public int[] getVariaveisNaoBasicas() {
 		return variaveisNaoBasicas;
 	}
 }

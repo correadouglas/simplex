@@ -1,6 +1,17 @@
 package br.pucminas.simplex;
 
-
+/**
+ * 
+ * Pontificia Universidade Catolica de Minas Gerais.
+ * Otimizacao de Sistemas Computacionais.
+ * 
+ * Implementacao Simplex.
+ *
+ * Douglas Henrique Silva Correa.
+ * Guilherme Silva Santos.
+ * Mateus Felipe Martins Miranda.
+ * 
+ */
 public class Simplex {
 
 	public static int OTIMO = 0;
@@ -13,9 +24,12 @@ public class Simplex {
 
 	private int status;
 
-	private Simplex() {
-	}
-
+	
+	/**
+	 * metodo que retorna o simplex instanciado.
+	 * 
+	 * @return
+	 */
 	public static Simplex getInstancia() {
 		if (instancia == null) {
 			instancia = new Simplex();
@@ -23,7 +37,14 @@ public class Simplex {
 
 		return instancia;
 	}
-
+	
+	/**
+	 * metodo que faz a chamada dos passos do simplex.
+	 * 
+	 * @param e
+	 * @return
+	 * @throws Exception
+	 */
 	public double[] executar(Expressao e) throws Exception {
 		tabela = new TabelaSimplex(e);
 		primeiroPasso();
@@ -32,7 +53,11 @@ public class Simplex {
 		this.status = OTIMO;
 		return tabela.getValoresVariaveis();
 	}
-
+	
+	/**
+	 * executa o primeiro passo do algoritmo.
+	 * 
+	 */
 	private void primeiroPasso() throws Exception {
 		int indiceMembrosLivresNegativos;
 		while ((indiceMembrosLivresNegativos = tabela.getIndiceMembrosLivresNegativos()) != -1) {
@@ -46,10 +71,14 @@ public class Simplex {
 
 			linhaPermitida = tabela.getLinhaPermitida(colunaPermitida);
 
-			tabela.trocarAlgoritmo(linhaPermitida, colunaPermitida);
+			tabela.mudarAlgoritmo(linhaPermitida, colunaPermitida);
 		}
 	}
 
+	/**
+	 * executa o segundo passo do algoritmo.
+	 * 
+	 */
 	private void segundoPasso() throws Exception {
 		int colunaPermitida;
 		while ((colunaPermitida = tabela.getIndiceFXPositivo()) != -1) {
@@ -60,7 +89,7 @@ public class Simplex {
 			int linhaPermitida;
 
 			linhaPermitida = tabela.getLinhaPermitida(colunaPermitida);
-			tabela.trocarAlgoritmo(linhaPermitida, colunaPermitida);
+			tabela.mudarAlgoritmo(linhaPermitida, colunaPermitida);
 		}
 	}
 

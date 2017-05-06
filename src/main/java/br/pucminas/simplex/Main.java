@@ -2,13 +2,26 @@ package br.pucminas.simplex;
 
 import com.google.gson.Gson;
 
+/**
+ * 
+ * Pontificia Universidade Catolica de Minas Gerais.
+ * Otimizacao de Sistemas Computacionais.
+ * 
+ * Implementacao Simplex.
+ *
+ * Douglas Henrique Silva Correa.
+ * Guilherme Silva Santos.
+ * Mateus Felipe Martins Miranda.
+ * 
+ */
 public class Main {
-
-	private static int nVariaveisIndice = 0;
-	private static int nRestricoesIndice = 1;
-	private static int objetivoIndice = 2;
-	private static int funcaoObjetivoIndice = 3;
-
+	
+	/**
+	 * monta uma resposta para retorno na chamada.
+	 * 
+	 * @param retorno
+	 * @return
+	 */
 	private static String montarResultado(double[] retorno) {
 		String resultado = "";
 		resultado += "{";
@@ -26,7 +39,14 @@ public class Main {
 
 		return resultado;
 	}
-
+	
+	/**
+	 * monta uma resposta para retorno na chamada quando ha erro.
+	 * 
+	 * @param erro
+	 * @param codigo
+	 * @return
+	 */
 	private static String montarResultadoErro(String erro, int codigo) {
 		String resultado = "";
 		resultado += "{";
@@ -37,43 +57,13 @@ public class Main {
 
 		return resultado;
 	}
-
-	private static Expressao formatarExpressao(String[] parametro) throws Exception {
-		int nVariaveis = Integer.parseInt(parametro[nVariaveisIndice]);
-		int nRestricoes = Integer.parseInt(parametro[nRestricoesIndice]);
-		int objetivo = Integer.parseInt(parametro[objetivoIndice]);
-
-		double[] funcaoObjetivo = new double[nVariaveis];
-		double[][] restricoes = new double[nRestricoes][nVariaveis];
-		double[] sinaisRestricoes = new double[nRestricoes];
-		double[] b = new double[nRestricoes];
-
-		int indiceParametro = funcaoObjetivoIndice;
-		for (int i = 0; i < nVariaveis; i += 1) {
-			funcaoObjetivo[i] = Double.parseDouble(parametro[indiceParametro]);
-			indiceParametro += 1;
-		}
-
-		for (int i = 0; i < nRestricoes; i += 1) {
-			for (int j = 0; j < nVariaveis; j += 1) {
-				restricoes[i][j] = Double.parseDouble(parametro[indiceParametro]);
-				indiceParametro += 1;
-			}
-		}
-
-		for (int i = 0; i < nRestricoes; i += 1) {
-			sinaisRestricoes[i] = Double.parseDouble(parametro[indiceParametro]);
-			indiceParametro += 1;
-		}
-
-		for (int i = 0; i < nRestricoes; i += 1) {
-			b[i] = Double.parseDouble(parametro[indiceParametro]);
-			indiceParametro += 1;
-		}
-
-		return new Expressao(objetivo, funcaoObjetivo, restricoes, sinaisRestricoes, b);
-	}
-
+	
+	/**
+	 * metodo que executa o algoritmo do simplex.
+	 * 
+	 * @param exp
+	 * @return
+	 */
 	public static String executarSimplex(Expressao exp) {
 
 		String retornoString = null;
@@ -91,7 +81,12 @@ public class Main {
 		}
 
 	}
-
+	
+	/**
+	 * classe main para testes.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
 			int objetivo = Expressao.MAX;
@@ -103,7 +98,7 @@ public class Main {
 			Expressao exp = new Expressao(objetivo, funcaoObjetivo, restricoes, sinaisRestricoes, b);
 			Gson gson = new Gson();
 			System.out.println("Json = " + gson.toJson(exp));
-			// executarSimplex(exp);
+			executarSimplex(exp);
 
 		} catch (Exception e) {
 			// TODO: handle exception

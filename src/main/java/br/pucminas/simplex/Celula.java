@@ -1,9 +1,24 @@
 package br.pucminas.simplex;
 
+/**
+ * 
+ * Pontificia Universidade Catolica de Minas Gerais.
+ * Otimizacao de Sistemas Computacionais.
+ * 
+ * Implementacao Simplex.
+ *
+ * Douglas Henrique Silva Correa.
+ * Guilherme Silva Santos.
+ * Mateus Felipe Martins Miranda.
+ * 
+ */
 public class Celula {
 	
 	private double top, bottom;
-
+	
+	/*
+	 * construtor padrao da classe auxiliar.
+	 */
 	public Celula(){
 		this.top = 0;	
 		this.bottom = 0;
