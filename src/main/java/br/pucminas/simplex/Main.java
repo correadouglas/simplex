@@ -1,5 +1,7 @@
 package br.pucminas.simplex;
 
+import com.google.gson.Gson;
+
 public class Main {
 
 	private static int nVariaveisIndice = 0;
@@ -7,27 +9,33 @@ public class Main {
 	private static int objetivoIndice = 2;
 	private static int funcaoObjetivoIndice = 3;
 
-	private static void mostrarResultado(double[] retorno) {
-		System.out.print("{");
-		System.out.print("\"erro\": " + false + ", ");
-		System.out.print("\"z\": " + retorno[0] + ", ");
-		System.out.print("\"respostas\": {");
+	private static String montarResultado(double[] retorno) {
+		String resultado = "";
+		resultado += "{";
+		resultado += "\"erro\": " + false + ", ";
+		resultado += "\"z\": " + retorno[0] + ", ";
+		resultado += "\"respostas\": {";
 		for (int i = 1; i < retorno.length; i += 1) {
-			System.out.print("\"x" + i + "\": " + retorno[i]);
+			resultado += "\"x" + i + "\": " + retorno[i];
 			if (i != retorno.length - 1) {
-				System.out.print(", ");
+				resultado += ", ";
 			}
 		}
-		System.out.print("}");
-		System.out.print("}");
+		resultado += "}";
+		resultado += "}";
+
+		return resultado;
 	}
 
-	private static void mostrarErro(String erro, int codigo) {
-		System.out.print("{");
-		System.out.print("\"erro\": " + true + ", ");
-		System.out.print("\"codigo\": " + codigo + ", ");
-		System.out.print("\"msg\": \"" + erro + "\"");
-		System.out.print("}");
+	private static String montarResultadoErro(String erro, int codigo) {
+		String resultado = "";
+		resultado += "{";
+		resultado += "\"erro\": " + true + ", ";
+		resultado += "\"codigo\": " + codigo + ", ";
+		resultado += "\"msg\": \"" + erro + "\"";
+		resultado += "}";
+
+		return resultado;
 	}
 
 	private static Expressao formatarExpressao(String[] parametro) throws Exception {
@@ -68,16 +76,20 @@ public class Main {
 
 	public static String executarSimplex(Expressao exp) {
 
+		String retornoString = null;
+
 		try {
 			double[] retorno = Simplex.getInstancia().executar(exp);
 
-			mostrarResultado(retorno);
+			retornoString = montarResultado(retorno);
+
+			return retornoString;
 
 		} catch (Exception e) {
-			mostrarErro(e.getMessage(), Simplex.getInstancia().getStatus());
+			retornoString = montarResultadoErro(e.getMessage(), Simplex.getInstancia().getStatus());
+			return retornoString;
 		}
 
-		return null;
 	}
 
 	public static void main(String[] args) {
@@ -89,8 +101,9 @@ public class Main {
 			double[] b = { 24, 16, 3 };
 
 			Expressao exp = new Expressao(objetivo, funcaoObjetivo, restricoes, sinaisRestricoes, b);
-
-			executarSimplex(exp);
+			Gson gson = new Gson();
+			System.out.println("Json = " + gson.toJson(exp));
+			// executarSimplex(exp);
 
 		} catch (Exception e) {
 			// TODO: handle exception
