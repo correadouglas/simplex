@@ -31,7 +31,7 @@ public class SimplexController {
 	@RequestMapping(value = "/simplex", method = RequestMethod.POST)
 	public String executarSimplex(@RequestBody String exp) {
 		Gson gson = new Gson();
-		Expressao expressao = gson.fromJson(exp, Expressao.class);
+		SimplexExpressao expressao = gson.fromJson(exp, SimplexExpressao.class);
 		return simplexService.executarSimplex(expressao);
 	}
 }

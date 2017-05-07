@@ -20,7 +20,7 @@ public class Simplex {
 
 	private static Simplex instancia;
 
-	private TabelaSimplex tabela;
+	private SimplexTabela tabela;
 
 	private int status;
 
@@ -45,8 +45,8 @@ public class Simplex {
 	 * @return
 	 * @throws Exception
 	 */
-	public double[] executar(Expressao e) throws Exception {
-		tabela = new TabelaSimplex(e);
+	public double[] executar(SimplexExpressao e) throws Exception {
+		tabela = new SimplexTabela(e);
 		primeiroPasso();
 		segundoPasso();
 

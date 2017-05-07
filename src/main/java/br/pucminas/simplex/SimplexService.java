@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SimplexService {
 
-	public String executarSimplex(Expressao exp) {
+	public String executarSimplex(SimplexExpressao exp) {
 		return Main.executarSimplex(exp);
 	}
 }

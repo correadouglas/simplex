@@ -12,7 +12,7 @@ package br.pucminas.simplex;
  * Mateus Felipe Martins Miranda.
  * 
  */
-public class Expressao {
+public class SimplexExpressao {
 
 	public static int MIN = 1;
 	public static int MAX = 2;
@@ -37,7 +37,7 @@ public class Expressao {
 	 * @param b
 	 * @throws Exception
 	 */
-	public Expressao(int objetivo, double[] funcaoObjetivo, double[][] restricoes, double[] sinaisRestricoes,
+	public SimplexExpressao(int objetivo, double[] funcaoObjetivo, double[][] restricoes, double[] sinaisRestricoes,
 			double[] b) throws Exception {
 
 		int nVariaveis = funcaoObjetivo.length;

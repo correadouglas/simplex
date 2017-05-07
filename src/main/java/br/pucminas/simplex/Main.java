@@ -64,7 +64,7 @@ public class Main {
 	 * @param exp
 	 * @return
 	 */
-	public static String executarSimplex(Expressao exp) {
+	public static String executarSimplex(SimplexExpressao exp) {
 
 		String retornoString = null;
 
@@ -89,13 +89,13 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		try {
-			int objetivo = Expressao.MAX;
+			int objetivo = SimplexExpressao.MAX;
 			double[] funcaoObjetivo = { 80, 60 };
 			double[][] restricoes = { { 4, 6 }, { 4, 2 }, { 0, 1 } };
-			double[] sinaisRestricoes = { Expressao.MAIOR_QUE, Expressao.MENOR_QUE, Expressao.MENOR_QUE };
+			double[] sinaisRestricoes = { SimplexExpressao.MAIOR_QUE, SimplexExpressao.MENOR_QUE, SimplexExpressao.MENOR_QUE };
 			double[] b = { 24, 16, 3 };
 
-			Expressao exp = new Expressao(objetivo, funcaoObjetivo, restricoes, sinaisRestricoes, b);
+			SimplexExpressao exp = new SimplexExpressao(objetivo, funcaoObjetivo, restricoes, sinaisRestricoes, b);
 			Gson gson = new Gson();
 			System.out.println("Json = " + gson.toJson(exp));
 			executarSimplex(exp);

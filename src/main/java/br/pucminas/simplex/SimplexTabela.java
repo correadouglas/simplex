@@ -12,10 +12,10 @@ package br.pucminas.simplex;
  * Mateus Felipe Martins Miranda.
  * 
  */
-public class TabelaSimplex {
+public class SimplexTabela {
 	
-	Expressao e;
-	private Celula[][] tabelaSimplex;
+	SimplexExpressao e;
+	private SimplexCelula[][] tabelaSimplex;
 	private int[] variaveisBasicas;
 	private int[] variaveisNaoBasicas;
 
@@ -23,7 +23,7 @@ public class TabelaSimplex {
 	 * construtor padrao.
 	 * 
 	 */
-	public TabelaSimplex(Expressao e) {
+	public SimplexTabela(SimplexExpressao e) {
 		this.e = e;
 		this.criarTabelaSimplex();
 		this.preencherTabelaObjetivo();
@@ -40,25 +40,25 @@ public class TabelaSimplex {
 		this.variaveisNaoBasicas = new int[e.contadorVariveisNaoBasicas()];
 		int rows = variaveisBasicas.length + 1;
 		int cols = variaveisNaoBasicas.length + 1;
-		tabelaSimplex = new Celula[rows][cols];
+		tabelaSimplex = new SimplexCelula[rows][cols];
 	}
 	
 	/**
 	 * preenche a tabela do simplex com os valores da funcao objetivo.
 	 */
 	private void preencherTabelaObjetivo() {
-		tabelaSimplex[0][0] = new Celula();
+		tabelaSimplex[0][0] = new SimplexCelula();
 
 		double[] funcaoObjetivo = e.getFuncaoObjetivo();
 		int multiplicador;
-		if (e.getObjetivo() == Expressao.MAX) {
+		if (e.getObjetivo() == SimplexExpressao.MAX) {
 			multiplicador = 1;
 		} else {
 			multiplicador = -1;
 		}
 
 		for (int i = 1; i <= funcaoObjetivo.length; i += 1) {
-			tabelaSimplex[0][i] = new Celula(funcaoObjetivo[i - 1] * multiplicador);
+			tabelaSimplex[0][i] = new SimplexCelula(funcaoObjetivo[i - 1] * multiplicador);
 		}
 	}
 
@@ -68,14 +68,14 @@ public class TabelaSimplex {
 	private void preencherRestricoes() {
 		for (int i = 1; i <= variaveisBasicas.length; i += 1) {
 			int multiplicador;
-			if (e.getSinalRestricao(i - 1) == Expressao.MAIOR_QUE) {
+			if (e.getSinalRestricao(i - 1) == SimplexExpressao.MAIOR_QUE) {
 				multiplicador = -1;
 			} else {
 				multiplicador = 1;
 			}
-			tabelaSimplex[i][0] = new Celula(e.getB(i - 1) * multiplicador);
+			tabelaSimplex[i][0] = new SimplexCelula(e.getB(i - 1) * multiplicador);
 			for (int j = 1; j <= variaveisNaoBasicas.length; j += 1) {
-				tabelaSimplex[i][j] = new Celula(e.getConstraint(i - 1, j - 1) * multiplicador);
+				tabelaSimplex[i][j] = new SimplexCelula(e.getConstraint(i - 1, j - 1) * multiplicador);
 			}
 		}
 	}
@@ -222,7 +222,7 @@ public class TabelaSimplex {
 	 * @param colunaPermitida
 	 */
 	private void refazerTabela(int linhaPermitida, int colunaPermitida) {
-		Celula[][] tabela = new Celula[tabelaSimplex.length][tabelaSimplex[0].length];
+		SimplexCelula[][] tabela = new SimplexCelula[tabelaSimplex.length][tabelaSimplex[0].length];
 
 		copiaCelulas(tabela, linhaPermitida, colunaPermitida);
 		somaCelulas(tabela, linhaPermitida, colunaPermitida);
@@ -237,13 +237,13 @@ public class TabelaSimplex {
 	 * @param linhaPermitida
 	 * @param colunaPermitida
 	 */
-	private void copiaCelulas(Celula[][] tabela, int linhaPermitida, int colunaPermitida) {
+	private void copiaCelulas(SimplexCelula[][] tabela, int linhaPermitida, int colunaPermitida) {
 		for (int i = 0; i < tabela.length; i += 1) {
-			tabela[i][colunaPermitida] = new Celula(tabelaSimplex[i][colunaPermitida].getBottom());
+			tabela[i][colunaPermitida] = new SimplexCelula(tabelaSimplex[i][colunaPermitida].getBottom());
 		}
 
 		for (int j = 0; j < tabela[0].length; j += 1) {
-			tabela[linhaPermitida][j] = new Celula(tabelaSimplex[linhaPermitida][j].getBottom());
+			tabela[linhaPermitida][j] = new SimplexCelula(tabelaSimplex[linhaPermitida][j].getBottom());
 		}
 	}
 
@@ -254,14 +254,14 @@ public class TabelaSimplex {
 	 * @param linhaPermitida
 	 * @param colunaPermitida
 	 */
-	private void somaCelulas(Celula[][] tabela, int linhaPermitida, int colunaPermitida) {
+	private void somaCelulas(SimplexCelula[][] tabela, int linhaPermitida, int colunaPermitida) {
 
 		for (int i = 0; i < tabela.length; i += 1) {
 			if (i != linhaPermitida) {
 				for (int j = 0; j < tabela[i].length; j += 1) {
 					if (j != colunaPermitida) {
 						double value = tabelaSimplex[i][j].getTop() + tabelaSimplex[i][j].getBottom();
-						tabela[i][j] = new Celula(value);
+						tabela[i][j] = new SimplexCelula(value);
 					}
 				}
 			}
@@ -323,7 +323,7 @@ public class TabelaSimplex {
 		return valores;
 	}
 
-	public Celula[][] getTabelaSimplex() {
+	public SimplexCelula[][] getTabelaSimplex() {
 		return tabelaSimplex;
 	}
 

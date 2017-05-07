@@ -12,19 +12,19 @@ package br.pucminas.simplex;
  * Mateus Felipe Martins Miranda.
  * 
  */
-public class Celula {
+public class SimplexCelula {
 	
 	private double top, bottom;
 	
 	/*
 	 * construtor padrao da classe auxiliar.
 	 */
-	public Celula(){
+	public SimplexCelula(){
 		this.top = 0;	
 		this.bottom = 0;
 	}
 
-	public Celula(double top){
+	public SimplexCelula(double top){
 		this.top = top;	
 		this.bottom = 0;
 	}
