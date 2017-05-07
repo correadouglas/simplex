@@ -2,9 +2,9 @@
 Implementação do Simplex
 
 Exemplo de JSON a ser passado para a API do Simplex
-# legendas 
-# objetivo: 1 - Minimizar / 2 - Maximizar
-# sinaisRestricoes: 1 - Igual (=) / 2 - Maior Igual (>=) / 3 - Menor Igual (<=)
+legendas 
+objetivo: 1 - Minimizar / 2 - Maximizar
+sinaisRestricoes: 1 - Igual (=) / 2 - Maior Igual (>=) / 3 - Menor Igual (<=)
 {
 "objetivo":2,
 "funcaoObjetivo":[80.0,60.0],
