@@ -2,6 +2,10 @@
 Implementação do Simplex
 
 Exemplo de JSON a ser passado para a API do Simplex
+FO(x) -> Max Z = 80x1 + 60x2
+4x1 + 6x2 >= 24
+4x1 + 2x2 <= 16
+1x2 <= 3
 
 legendas 
 
